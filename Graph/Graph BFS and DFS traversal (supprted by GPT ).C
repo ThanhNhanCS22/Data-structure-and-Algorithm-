@@ -96,7 +96,7 @@ int dequeue( Queue *q ){
 
 
 void BFS(Graph* graph, int startVertex) {
-    int *visited = calloc(MAX,sizeof(int) )  ;  
+    int *visited = calloc(graph->numVertices,sizeof(int) )  ;  
     Queue* queue = createQueue();
 
     visited[startVertex] = 1;  
@@ -145,14 +145,57 @@ void DFSoperation(Graph* graph, int startVertex, int* visited ) {
 
 void DFS(Graph * graph, int startVertex) { 
 
-    int *visited = calloc(MAX,sizeof(int) )  ; 
+    int *visited = calloc(graph->numVertices,sizeof(int) )  ; 
     DFSoperation(graph, startVertex,visited)  ; 
     
     free(visited); 
     printf("\n") ; 
 }
 
+int *BFSshortestPath(Graph *graph, int startVertex) { 
+    Queue * queue = createQueue();  
+    int *shortestPathArr = malloc(sizeof(int) * graph->numVertices); 
+    int * visited = calloc(sizeof(int ), graph->numVertices); 
+    shortestPathArr[startVertex] = startVertex ; 
+    
+    enqueue(queue,startVertex) ;
+    while(!isEmpty(queue)){
+        int currentVertex = dequeue(queue); 
+        visited[currentVertex] = 1 ;  
+        for (int i = 0; i < graph->numVertices; i++) {
+            if (graph->adjMatrix[currentVertex][i] == 1 && !visited[i]) {
+                
+                visited[i] = 1;
+                enqueue(queue, i);
+                shortestPathArr[i] = currentVertex ;   
+                
+            }
+        } 
+    }
+    free(visited) ; 
+    return shortestPathArr ; 
+    
+}
 
+void showShortestPath(Graph * graph,int startVertex, int destinationVertex) {
+    int *shortestPathArr = BFSshortestPath(graph, startVertex) ; 
+    int * shortestPathArrToDestination = malloc(sizeof(int) *graph->numVertices) ; 
+     
+    int i = destinationVertex ; 
+    while (i != startVertex ){
+        shortestPathArrToDestination[shortestPathArr[i]] = i ; 
+        i = shortestPathArr[i];
+        
+    }
+    while( i != destinationVertex) {
+        printf("%s - ",graph->cityArr[i]) ; 
+        i = shortestPathArrToDestination[i] ; 
+    }  
+    printf("%s", graph->cityArr[destinationVertex]); 
+    
+    free(shortestPathArrToDestination); 
+    free(shortestPathArr) ;  
+} 
 
 
 
@@ -177,7 +220,11 @@ int main() {
 
     printf("DFS traversal starting from vertex 0:\n");
     DFS(graph,0); 
+    printf("\n") ;
     
+    
+    printf("Shortest path from TP HCM to Binh Phuoc is:\n") ; 
+    showShortestPath(graph,0,2) ; #I did code this method and its child method by myself. My parents are very proud of me ... 
     free(graph);
     
     return 0;
