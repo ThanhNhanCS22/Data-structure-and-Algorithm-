@@ -276,7 +276,7 @@ int main() {
         
     }
     
-    // free(mst ); 
+    free(mst ); 
     free(graph);
     
     return 0;
