@@ -233,7 +233,7 @@ MST * optimalPrimAlgorithmForMST(Graph *graph , int startVertex ) {
     free(heap->arr); 
     free(heap->posArr) ;
     free(heap); 
-    free(newMST ->distanceTo) ; 
+   
     free(visited); 
     return newMST ; 
     
