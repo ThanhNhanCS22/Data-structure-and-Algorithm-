@@ -50,8 +50,9 @@ struct TreeNode * singleLeftRotate(struct TreeNode* x ) {
     y->left = x ; 
     x->right = T2 ; 
     
+    x->height= max(getHeight(x->right), getHeight(x->left)  ) + 1 ;  
     y->height= max(getHeight(y->right), getHeight(y->left)  ) + 1 ;  
-    x->height= max(getHeight(y->right), getHeight(y->left)  ) + 1 ;  
+     
     
     return y ; 
 }
@@ -66,20 +67,22 @@ struct TreeNode * singleRightRotate(struct TreeNode* y ) {
     x->right = y ; 
     y->left = T2 ; 
     
+    
     y->height= max(getHeight(y->right), getHeight(y->left)  ) + 1 ;  
-    x->height= max(getHeight(y->right), getHeight(y->left)  ) + 1 ;  
+    x->height= max(getHeight(x->right), getHeight(x->left)  ) + 1 ;  
     
     return x ; 
 } 
 
-struct TreeNode * doubleLeftRotate(struct TreeNode * x) {
-    x->right= singleRightRotate(x->right); 
-    return singleLeftRotate(x);  
-} 
+struct TreeNode* doubleLeftRightRotate(struct TreeNode* node) {
+    node->left = singleLeftRotate(node->left);
+    return singleRightRotate(node);
+}
 
-struct TreeNode * doubleRightRotate(struct TreeNode * x) {
-    x->left= singleLeftRotate(x->left); 
-    return singleRightRotate(x);  
+// Function to perform double rotation - first right then left
+struct TreeNode* doubleRightLeftRotate(struct TreeNode* node) {
+    node->right = singleRightRotate(node->right);
+    return singleLeftRotate(node);
 }
 
 
@@ -109,14 +112,14 @@ struct TreeNode* insert (struct TreeNode * root, int data ) {
     } 
     //left right case 
     else if(bf >1  && data > root-> left -> data) {
-        return doubleLeftRotate(root); 
+        return doubleLeftRightRotate(root); 
         
     } 
     
     //right left case 
     
     else if (bf < -1 && data <root ->right ->data ) {
-        return  doubleRightRotate(root);
+        return  doubleRightLeftRotate(root);
         
     }
     return root ; 
@@ -131,10 +134,12 @@ int main()
 {
     struct TreeNode *root= createEmptyAVLTree() ; 
     root = insert(root, 45) ; 
-    root = insert(root, 3) ;
-    root = insert(root, 4) ;
-    root = insert(root, 46) ;
-    root = insert(root, 88) ;
+    root = insert(root, 46) ; 
+    root = insert(root, 47) ; 
+    root = insert(root, 50) ; 
+    root = insert(root, 48) ; 
+    
+    printf("%d",root->data) ;  
     
     
     
