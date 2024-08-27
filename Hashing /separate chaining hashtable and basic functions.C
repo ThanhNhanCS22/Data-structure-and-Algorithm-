@@ -31,7 +31,7 @@ HashTable * createHashTable(){
     HashTable * newTable = malloc(sizeof(HashTable) ) ; 
     printf("Let's enter the size of hash table: "); 
     scanf("%d",&(newTable-> hashSize)); 
-    newTable->hashTable = malloc(newTable->hashSize*sizeof(HashNode) ) ; 
+    newTable->hashTable = malloc(newTable->hashSize*sizeof(HashNode*) ) ; 
     
     return newTable ; 
     
